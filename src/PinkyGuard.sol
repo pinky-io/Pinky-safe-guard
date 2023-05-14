@@ -65,7 +65,7 @@ contract PinkyGuard is IERC165, BaseGuard {
         }
     }
 
-    function IsSetGuard(bytes memory data) internal returns (bool) {
+    function IsSetGuard(bytes memory data) internal pure returns (bool) {
         bytes4 ExpectedSetGuardFunctionSelector = bytes4(keccak256("setGuard(address)"));
 
         // If transaction data is shorter than 4 bytes it is not a setGuard transaction
@@ -83,13 +83,10 @@ contract PinkyGuard is IERC165, BaseGuard {
         return ActualFunctionSelector == ExpectedSetGuardFunctionSelector;
     }
 
-    function IsApproval(bytes memory data) internal returns (bool result) {
+    function IsApproval(bytes memory data) internal view returns (bool result) {
         result = false;
         bytes4 ExpectedApproveFunctionSelector = bytes4(keccak256("approve(address,uint256)"));
         bytes4 ExpectedSetApprovalForAllFunctionSelector = bytes4(keccak256("setApprovalForAll(address,bool)"));
-        address ActualAddress;
-        uint256 ActualId;
-        bool ApprovalBool;
 
         // If transaction data is shorter than 4 bytes it is not an approval transaction
         if (data.length < 4) {
